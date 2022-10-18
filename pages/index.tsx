@@ -1,9 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+import Link from "next/link";
+import { Database } from "../database";
 import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
+interface UserIntegration {
+  id: string;
+  name: string;
+  isEnabled: boolean;
+}
+
+const Home: NextPage<{ integrations: UserIntegration[]}> = ({ integrations }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -17,10 +24,38 @@ const Home: NextPage = () => {
 
         <p className={styles.description}>Manage your integrations here</p>
 
-        <div className={styles.grid}>Build here</div>
+        <div className={styles.grid}>
+          {integrations?.map(x => 
+            <Link href={x.id} key={x.id}>
+              <a className={styles.card}>
+                <h2>{x.name}</h2>
+                <p>{x.isEnabled ? "Manage" : "Set up"}</p>
+              </a>
+            </Link>
+            )}
+        </div>
       </main>
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const partners = Database.getIntegrationPartners();
+  const integrations = Database.getIntegrations();
+
+  return { 
+    props: { 
+      integrations: partners.map(x => {
+        const integration = integrations.find(y => y.integration_partner_id === x.id);
+    
+        return {
+          id: x.id,
+          name: x.name,
+          isEnabled: !!integration,
+        }
+      })
+    } 
+  };
+}
 
 export default Home;
