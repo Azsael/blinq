@@ -143,3 +143,18 @@ export class Database {
     ]
   }
 }
+
+export const ContactFieldMappings = [
+  {
+    key: 'given_name',
+    label: 'Given Name'
+  },
+  {
+    key: 'family_name',
+    label: 'Family Name'
+  },
+  {
+    key: 'email',
+    label: 'Email'
+  }
+]

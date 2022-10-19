@@ -1,15 +1,8 @@
 .container {
-  padding: 0 2rem;
-}
-
-.main {
+  padding: 4rem 1rem;
   min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  max-width: 38rem;
+  margin: 0 auto;
 }
 
 .title {
@@ -20,15 +13,109 @@
 }
 
 .back {
+  background-color: aquamarine;
+  border-color: aquamarine;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  text-align: center;
+  transition: 0.5s ease all;
+  display: inline-block;
+  margin-top: 1rem;
+}
 
+.back:hover,
+.back:focus,
+.back:active {
+  background-color: rgb(193, 255, 234);
+  border-color: rgb(193, 255, 234);
+  outline: auto;
 }
 
 .disconnect {
-
+  display: inline-block;
+  background-color: white;
+  border: 2px solid red;
+  color: red;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  transition: 0.5s ease all;
+  margin-top: 1.5rem;
+  width: 100%;
+  cursor: pointer;
 }
+
+.disconnect:hover,
+.disconnect:focus,
+.disconnect:active {
+  background-color: red;
+  border-color: red;
+  color: white;
+  outline: auto;
+}
+
+.submit {
+  background-color: aquamarine;
+  border: 2px solid aquamarine;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  transition: 0.5s ease all;
+  cursor: pointer;
+}
+
+.submit:hover,
+.submit:focus,
+.submit:active {
+  background-color: rgb(193, 255, 234);
+  border-color: rgb(193, 255, 234);
+  outline: auto;
+}
+
 
 .form {
   display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+}
 
-  gap: 0.5rem;
+.fieldset {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.label {
+  cursor: pointer;
+  color: #333;
+}
+
+.input {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 2px solid #666;
+}
+
+.hint {
+  color: #666;
+}
+
+.mapping {
+
+
+}
+
+.mappings {
+  margin-top: 0.5rem;
+  border: 1px solid #dedede;
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  display: grid;
+  gap: 1rem;
+
 }

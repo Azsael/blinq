@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent } from "react";
-import { Database } from "../database";
+import { ContactFieldMappings, Database } from "../database";
 import styles from "../styles/Integration.module.css";
 import qs from 'qs';
 
@@ -39,6 +39,9 @@ const Integration: NextPage<{ integration: UserIntegration }> = ({ integration }
   const router = useRouter();
 
   const onDisconnect = async () => {
+    if (!confirm("Are you sure?")) { // nicer dialog or something
+      return;
+    }
     const options = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
@@ -54,25 +57,26 @@ const Integration: NextPage<{ integration: UserIntegration }> = ({ integration }
   }
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <Head>
         <title>Blinq • Integrations</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>{integration.name}</h1>
+      <h1 className={styles.title}>{integration.name}</h1>
 
-        <Link href="/" className={styles.back}>
+      <Link href="/" >
+        <a className={styles.back}>
           Back to integrations
-        </Link>
-        
-        {integration.isEnabled && <button type="button" onClick={() => onDisconnect()} className={styles.disconnect}>Disconnect</button>}
-        
-        <IntegrationForm integration={integration}></IntegrationForm>
+        </a>        
+      </Link>
+      
+      <IntegrationForm integration={integration}></IntegrationForm>
 
-      </main>
-    </div>
+      {integration.isEnabled && <button type="button" onClick={() => onDisconnect()} className={styles.disconnect}>Disconnect</button>}
+      
+
+    </main>
   );
 };
 
@@ -107,52 +111,40 @@ function IntegrationForm({ integration }: { integration: UserIntegration }) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      <h2>{integration.isEnabled ? "Manage your integration" : "Setup your integration"}</h2>
       
       {integration.fields?.map(x => <IntegrationFormField key={x.key} field={x} />)}
 
-      <button type="submit">Submit {integration.name}</button>
+      <button className={styles.submit} type="submit">{integration.isEnabled ? "Update" : "Setup"} {integration.name}</button>
     </form>
   )
 }
 
-const FieldMappings = [
-  {
-    key: 'given_name',
-    label: 'Given Name'
-  },
-  {
-    key: 'family_name',
-    label: 'Family Name'
-  },
-  {
-    key: 'email',
-    label: 'Email'
-  }
-]
-
 function IntegrationFormField({ field }: { field: UserIntegrationField }) {
   if (field.type === 'mappings') {
     return (
-      <>
+      <div className={styles.mapping}>
         <div>{field.label}</div>
         <small>{field.hint}</small>
 
-        {FieldMappings.map(x => (
-          <React.Fragment key={x.key}>
-            <label htmlFor={x.key}>{x.label}</label>
-            <input type="text" id={field.key} name={`${field.key}[${x.key}]`} defaultValue={field.value[x.key]} />
-          </React.Fragment>
-        ))}
-      </>
+        <div className={styles.mappings}>
+          {ContactFieldMappings.map(x => (
+            <fieldset className={styles.fieldset} key={x.key}>
+              <label className={styles.label} htmlFor={x.key}>{x.label}</label>
+              <input className={styles.input} type="text" id={field.key} name={`${field.key}[${x.key}]`} defaultValue={field.value[x.key]} />
+            </fieldset>
+          ))}
+        </div>
+      </div>
     );
   }
 
   return (
-    <>
-      <label htmlFor={field.key}>{field.label}</label>
-      <input type="text" id={field.key} name={field.key} defaultValue={field.value} required />
-      <small>{field.hint}</small>
-    </>
+    <fieldset className={styles.fieldset}>
+      <label className={styles.label} htmlFor={field.key}>{field.label}</label>
+      <input className={styles.input} type="text" id={field.key} name={field.key} defaultValue={field.value} required />
+      <small className={styles.hint}>{field.hint}</small>
+    </fieldset>
   );
 }
 

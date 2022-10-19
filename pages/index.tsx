@@ -29,7 +29,7 @@ const Home: NextPage<{ integrations: UserIntegration[]}> = ({ integrations }) =>
             <Link href={x.id} key={x.id}>
               <a className={styles.card}>
                 <h2>{x.name}</h2>
-                <p>{x.isEnabled ? "Manage" : "Set up"}</p>
+                <p>{x.isEnabled ? "Manage Integration" : "Set up Integration"}</p>
               </a>
             </Link>
             )}
